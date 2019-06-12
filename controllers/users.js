@@ -56,5 +56,11 @@ module.exports = {
         res.status(200).json({
             msg: "secret"
         });
+    },
+
+    googleOAuth: async(req, res, next) => {
+        console.log('got here');
+        const token = signToken(req.user);
+        res.status(200).json({token: token});
     }
 };

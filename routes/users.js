@@ -20,5 +20,7 @@ router.route('/signin')
 router.route('/secret')
     .get(passport.authenticate('jwt', {session: false}), UserController.secret);
 
+router.route('/oauth/google')
+    .post(passport.authenticate('googleToken', {session: false}), UserController.googleOAuth);
 
 module.exports = router;

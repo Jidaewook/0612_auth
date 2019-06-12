@@ -4,7 +4,7 @@ const {ExtractJwt} = require('passport-jwt');
 const LocalStrategy = require('passport-local').Strategy;
 const config = require('./config');
 const userModel = require('./models/user');
-
+const GooglePlusTokenStrategy = require('passport-google-plus-token');
 
 
 //JSON Web Token Strategy
@@ -61,3 +61,40 @@ passport.use(new LocalStrategy({
     
 
 }))
+
+
+//Google OAuth Strategy
+passport.use('googleToken', new GooglePlusTokenStrategy({
+    // clientID: config.oauth.google.clientID,
+    // clientSecret: config.oauth.google.clientSecret
+    clientID: '50670876772-5vckqht5afnd3fho4ha5jickhrebig5t.apps.googleusercontent.com',
+    clientSecret: 'DbuE3Snj4MAZ6JuzsJmpmr9G'
+}, async(accessToken, refreshToken, profile, done)=> {
+    try{
+        //sholud have full user profile over here
+        console.log('profile', profile);
+        console.log('accessToken', accessToken);
+        console.log('refreshToken', refreshToken);
+        
+        const existingUser = await userModel.findOne({"google.id": profile.id});
+        if(existingUser){
+            console.log('existing user');
+            return done(null, existingUser);
+        }
+
+        //New user
+        const newUser = new userModel({
+            method: 'google', 
+            google: {
+                id: profile.id,
+                email: profile.emails[0].value
+            }
+        });
+        await newUser.save();
+        done(null, newUser);
+        
+    } catch(error){
+        done(error, false, error.message);
+    }
+}))
+
