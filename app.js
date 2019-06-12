@@ -3,7 +3,19 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const userRouter = require('./routes/users');
 
+const mongoose = require('mongoose');
+
 const app = express();
+const db = require('./config/keys').mongoURI;
+
+mongoose.connect(db, {useNewUrlParser: true})
+    .then(() => console.log("MongoDB Connected..."))
+    .catch(err => console.log(err));
+
+mongoose.Promise = global.Promise;
+
+mongoose.set('useCreateIndex', true)
+
 
 //Middlewares
 app.use(morgan('dev'));
