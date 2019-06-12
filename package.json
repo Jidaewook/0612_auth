@@ -4,7 +4,7 @@
   "description": "0612_auth",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1", 
+    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon app.js"
   },
   "author": "",
@@ -13,6 +13,7 @@
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
     "express-promise-router": "^3.0.3",
+    "joi": "^14.3.1",
     "morgan": "^1.9.1"
   },
   "devDependencies": {
