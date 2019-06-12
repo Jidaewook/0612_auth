@@ -45,6 +45,8 @@ module.exports = {
         console.log('signIn()');
     },
     secret: async (req, res, next) => {
-        console.log('secret()');
+        res.status(200).json({
+            msg: "secret"
+        });
     }
 };
