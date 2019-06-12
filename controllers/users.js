@@ -19,16 +19,21 @@ module.exports = {
         const {email, password} = req.value.body;
 
         //Check if there is a user with the same email
-        const foundUser = await userModel.findOne({email});
+        const foundUser = await userModel.findOne({"local.email": email});
         if(foundUser){
             return res.status(403).json({error: 'Email is already in use'});
         }
 
         //Else Create new user 
-        const newUser = new userModel({email, password});
+        const newUser = new userModel({
+            method: 'local',
+            local: {
+                email: email, 
+                password: password
+            }
+        });
         await newUser
             .save()
-
             .then(result => {
                 const token = signToken(newUser);
                 res.status(200).json({user: token});
@@ -43,6 +48,9 @@ module.exports = {
     }, 
     signIn: async (req, res, next) => {
         console.log('signIn()');
+
+        const token = signToken(req.user);
+        res.status(200).json({token: token});
     },
     secret: async (req, res, next) => {
         res.status(200).json({
