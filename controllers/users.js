@@ -61,6 +61,14 @@ module.exports = {
     googleOAuth: async(req, res, next) => {
         console.log('got here');
         const token = signToken(req.user);
-        res.status(200).json({token: token});
+        res.status(200).json({googleUserInfo: token});
+    },
+
+    facebookOAuth: async(req, res, next) => {
+        console.log('got fere');
+        const token = signToken(req.user);
+        res.status(200).json({facebookUserInfo: token});
     }
+
+
 };
